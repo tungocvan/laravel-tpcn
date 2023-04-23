@@ -9,6 +9,7 @@ use App\Http\Controllers\SignUpController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ThuocController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ForgotController;
 use App\Http\Controllers\ExportUserController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\Doctors\Auth\ForgotPasswordController;
 use App\Http\Controllers\Doctors\IndexController;
 use App\Http\Controllers\Doctors\Auth\ResetPasswordDoctorsController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Phoenix\PhoenixUserController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -48,6 +50,12 @@ use Illuminate\Support\Facades\Storage;
 Route::get('/home-phoenix', function () {          
     return view('phoenix',['content'=>'content']);
 });
+Route::get('/home-phoenix/user',[PhoenixUserController::class,'index']);
+Route::get('/home-phoenix/user/{id}',[PhoenixUserController::class,'getbyId']);
+
+Route::get('/', function () {          
+    return view('home-page');
+});
 
 
 
@@ -71,8 +79,8 @@ Route::post('/home-phoenix/upload', function (Request $request) {
 Auth::routes();
 
 
-Route::get('/', function () {            
-    return view('home-page');
+Route::get('/ui', function () {            
+    return view('custom');
 });
 
 
@@ -143,6 +151,10 @@ Route::prefix('/admin')->group(function(){
     
     Route::prefix('/thuoc')->group(function(){
         Route::get('/list', [ThuocController::class, 'index'])->name('thuoc.list');
+    });
+
+    Route::prefix('/settings')->group(function(){
+        Route::get('/', [SettingsController::class, 'index']);
     });
 });
 

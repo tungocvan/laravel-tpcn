@@ -12,7 +12,7 @@ class MenuSidebar extends Component
      *
      * @return void
      */
-    private $active = '';
+    private $active = ''; 
     public function __construct(Request $request)
     {
         // 
