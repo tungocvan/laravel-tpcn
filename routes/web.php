@@ -50,13 +50,14 @@ use Illuminate\Support\Facades\Storage;
 Route::get('/home-phoenix', function () {          
     return view('phoenix',['content'=>'content']);
 });
-Route::get('/home-phoenix/user',[PhoenixUserController::class,'index']);
+Route::get('/home-phoenix/user',[PhoenixUserController::class,'index'])->name('user-show');;
+Route::get('/home-phoenix/user/create/',[PhoenixUserController::class,'create']);
+Route::post('/home-phoenix/user/create',[PhoenixUserController::class,'create'])->name('user-add');
 Route::get('/home-phoenix/user/{id}',[PhoenixUserController::class,'getbyId']);
-
 Route::get('/', function () {          
     return view('home-page');
 });
-
+ 
 
 
 Route::get('/home-phoenix/{slug}', function ($slug,Request $request) {   

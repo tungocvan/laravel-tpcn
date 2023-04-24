@@ -10,4 +10,5 @@ class WpUserMeta extends Model
     use HasFactory;
     protected $table = "wp_usermeta";
     protected $fillable = ['user_id','meta_key','meta_value'];
+    public $timestamps = false;
 }
