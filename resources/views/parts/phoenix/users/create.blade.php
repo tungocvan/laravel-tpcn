@@ -62,6 +62,7 @@
       </div>
       <div class="mb-3">
         <input class="btn btn-primary me-1 mb-1" type="submit" name="addnew" value="Add new user" />
+        <a href="{{ route('user-show') }}" class="btn btn-primary me-1 mb-1" >Go Back</a>
       </div>  
       </form>
     </div>
