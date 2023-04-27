@@ -48,7 +48,7 @@ use Illuminate\Support\Facades\Storage;
 
 
 Route::get('/home-phoenix', function () {          
-    return view('phoenix',['content'=>'content']);
+    return view('phoenix',['content'=>'content','active' => '']);
 });
 Route::get('/home-phoenix/user',[PhoenixUserController::class,'index'])->name('user-show');;
 Route::get('/home-phoenix/user/create/',[PhoenixUserController::class,'create']);

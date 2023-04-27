@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<?php 
-    $myAsset = asset('freshcart'); 
-   // echo $myAsset;
+<?php $myAsset = asset('freshcart');
+// echo $myAsset;
 ?>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
