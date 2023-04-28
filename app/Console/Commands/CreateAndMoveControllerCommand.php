@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands; 
+namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
@@ -14,9 +14,9 @@ class CreateAndMoveControllerCommand extends Command
 
     public function handle()
     {
-        $controllerName  = $this->argument('controller')."Controller";
+        $controllerName = $this->argument('controller') . 'Controller';
         $nameModule = $this->argument('directoryModule');
-        $directory = "modules/{$nameModule }/src/Http/Controllers"; 
+        $directory = "modules/{$nameModule}/src/Http/Controllers";
         $controllerPath = app_path('Http/Controllers/' . $controllerName . '.php');
         $newControllerPath = $directory . '/' . $controllerName . '.php';
         $myoption = $this->option('resource');
@@ -26,19 +26,19 @@ class CreateAndMoveControllerCommand extends Command
             return;
         }
 
-        if($myoption){
-            Artisan::call('make:controller', ['name' => $controllerName,'--resource' => $myoption]);
-        }else{
+        if ($myoption) {
+            Artisan::call('make:controller', ['name' => $controllerName, '--resource' => $myoption]);
+        } else {
             Artisan::call('make:controller', ['name' => $controllerName]);
         }
-        
+
         File::move($controllerPath, $newControllerPath);
 
         // Đọc nội dung file model
         $content = file_get_contents($newControllerPath);
         $newNamespace = str_replace('/', '\\', $directory);
         $content = str_replace('namespace App\Http\Controllers;', "namespace {$newNamespace};", $content);
-        $content .= "\n use Illuminate\Http\Request;";
+
         file_put_contents($newControllerPath, $content);
 
         $this->info('Controller file created and moved successfully');
