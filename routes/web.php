@@ -35,8 +35,7 @@ use Illuminate\Support\Facades\Storage;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/ 
-
+*/
 
 /*
 |--------------------------------------------------------------------------
@@ -44,46 +43,40 @@ use Illuminate\Support\Facades\Storage;
 |--------------------------------------------------------------------------
 | Route cho trang Website
 |
-*/ 
+*/
 
-
-Route::get('/home-phoenix', function () {          
-    return view('phoenix',['content'=>'content','active' => '']);
+Route::get('/home-phoenix', function () {
+    return view('phoenix', ['content' => 'content', 'active' => '']);
 });
-Route::get('/home-phoenix/user',[PhoenixUserController::class,'index'])->name('user-show');;
-Route::get('/home-phoenix/user/create/',[PhoenixUserController::class,'create']);
-Route::post('/home-phoenix/user/create',[PhoenixUserController::class,'create'])->name('user-add');
-Route::get('/home-phoenix/user/{id}',[PhoenixUserController::class,'getbyId']);
-Route::get('/', function () {          
+Route::get('/home-phoenix/user', [PhoenixUserController::class, 'index'])->name('user-show');
+Route::get('/home-phoenix/user/create/', [PhoenixUserController::class, 'create']);
+Route::post('/home-phoenix/user/create', [PhoenixUserController::class, 'create'])->name('user-add');
+Route::get('/home-phoenix/user/{id}', [PhoenixUserController::class, 'getbyId']);
+Route::get('/', function () {
     return view('home-page');
 });
- 
 
-
-Route::get('/home-phoenix/{slug}', function ($slug,Request $request) {   
+Route::get('/home-phoenix/{slug}', function ($slug, Request $request) {
     //dd($request->name);
     $data = ['status' => 'THÔNG TIN DMS BÁN HÀNG'];
-    return view('phoenix',['content'=>$slug,'data' => $data]);
+    return view('phoenix', ['content' => $slug, 'data' => $data]);
 });
 
-Route::post('/home-phoenix/upload', function (Request $request) { 
-
+Route::post('/home-phoenix/upload', function (Request $request) {
     $file = $request->file('file');
-        $filename = $file->getClientOriginalName();
-        $path = $file->storeAs('uploads', $filename);
+    $filename = $file->getClientOriginalName();
+    $path = $file->storeAs('uploads', $filename);
 
-        return response()->json([
-            'path' => $path
+    return response()->json([
+        'path' => $path,
     ]);
 });
 
 Auth::routes();
 
-
-Route::get('/ui', function () {            
+Route::get('/ui', function () {
     return view('custom');
 });
-
 
 Route::get('/product-category', function () {
     return view('product-category');
@@ -92,16 +85,15 @@ Route::get('/product-detail', function () {
     return view('product-detail');
 });
 
-Route::get('/signin', [SignInController::class,'index'])->name('signin');
-Route::get('/signup', [SignUpController::class,'index'])->name('signup');
-Route::get('/forgot', [ForgotController::class,'index'])->name('forgot');
-Route::get('/reset-password',[ResetPasswordController::class, 'showResetForm'])->name('reset-password');
+Route::get('/signin', [SignInController::class, 'index'])->name('signin');
+Route::get('/signup', [SignUpController::class, 'index'])->name('signup');
+Route::get('/forgot', [ForgotController::class, 'index'])->name('forgot');
+Route::get('/reset-password', [ResetPasswordController::class, 'showResetForm'])->name('reset-password');
 
-Route::get('/logout',function(){
+Route::get('/logout', function () {
     Auth::guard('web')->logout();
     return redirect()->route('signin');
 })->middleware('auth:web');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -109,8 +101,7 @@ Route::get('/logout',function(){
 |--------------------------------------------------------------------------
 | Route cho trang Website đã đăng nhập
 |
-*/ 
-
+*/
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
@@ -121,27 +112,24 @@ Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 |--------------------------------------------------------------------------
 | Route cho trang Admin đã đăng nhập
 |
-*/ 
+*/
 
+Route::prefix('/admin')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin');
 
+    Route::prefix('/users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users');
+        Route::get('/add', [UserController::class, 'add'])->name('users.add');
+        Route::get('/roles', [UserController::class, 'roles'])->name('users.roles');
+    });
 
-
-Route::prefix('/admin')->group(function(){        
-    Route::get('/', [AdminController::class, 'index'])->name('admin');      
-
-    Route::prefix('/users')->group(function(){
-        Route::get('/', [UserController::class, 'index'])->name('users');    
-        Route::get('/add', [UserController::class, 'add'])->name('users.add');    
-        Route::get('/roles', [UserController::class, 'roles'])->name('users.roles');    
-    });   
-
-    Route::prefix('/post')->group(function(){
+    Route::prefix('/post')->group(function () {
         Route::get('/list', [PostController::class, 'index'])->name('post.list');
         Route::get('/add', [PostController::class, 'add'])->name('post.add');
         Route::get('/category', [PostController::class, 'category'])->name('post.category');
     });
 
-    Route::prefix('/product')->group(function(){
+    Route::prefix('/product')->group(function () {
         Route::get('/list', [ProductController::class, 'index'])->name('product.list');
         Route::get('/add', [ProductController::class, 'add']);
         Route::post('/add', [ProductController::class, 'add'])->name('product.add');
@@ -149,32 +137,27 @@ Route::prefix('/admin')->group(function(){
         Route::put('/update', [ProductController::class, 'update'])->name('product.update');
         Route::get('/category', [ProductController::class, 'category'])->name('product.category');
     });
-    
-    Route::prefix('/thuoc')->group(function(){
+
+    Route::prefix('/thuoc')->group(function () {
         Route::get('/list', [ThuocController::class, 'index'])->name('thuoc.list');
     });
 
-    Route::prefix('/settings')->group(function(){
+    Route::prefix('/settings')->group(function () {
         Route::get('/', [SettingsController::class, 'index']);
     });
 });
 
-
-
-
- 
 Route::get('/auth/facebook', function () {
     return Socialite::driver('facebook')->redirect();
 })->name('auth.facebook');
 
-Route::get('/auth/facebook/callback',[LoginController::class, 'facebookCallback']);
+Route::get('/auth/facebook/callback', [LoginController::class, 'facebookCallback']);
 
 Route::get('/auth/google', function () {
     return Socialite::driver('google')->redirect();
 })->name('auth.google');
 
-Route::get('/auth/google/callback',[LoginController::class, 'googleCallback']);
-
+Route::get('/auth/google/callback', [LoginController::class, 'googleCallback']);
 
 // Route::get('/export', [ExportUserController::class, 'export']);
 
@@ -196,6 +179,3 @@ Route::get('/auth/google/callback',[LoginController::class, 'googleCallback']);
 //     //Route::get('/reset-password',[ResetPasswordDoctorsController::class, 'showResetForm'])->name('reset-password');
 
 // });
-
-
-

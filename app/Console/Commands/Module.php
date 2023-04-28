@@ -75,7 +75,7 @@ class Module extends Command
                     $routeName = strtolower($name);
                     $content = "<?php \n use Illuminate\Support\Facades\Route;";
                     $content .= "\n use Modules\\{$name}\\src\Http\Controllers\\{$name}Controller;";
-                    $content .= "\n Route::prefix('/{$routeName}')->group(function(){";
+                    $content .= "\n Route::prefix('/{$routeName}')->middleware('{$routeName}.middleware')->group(function(){";
                     $content .= "\n     Route::get('/', [{$name}Controller::class, 'index']);\n });";
 
                     File::put($routesFile, $content);
@@ -115,6 +115,14 @@ class Module extends Command
                 // tạo thư mục Middlewares trong src
                 $middlewaresFolder = base_path('modules/' . $name . '/src/Http/Middlewares');
                 File::makeDirectory($middlewaresFolder, 0755, true, true);
+                Artisan::call('create:middleware', [
+                    'name' => $name,
+                    'path' => $name,
+                ]);
+                Artisan::call('update:middleware', [
+                    'name' => $name,
+                ]);
+
                 // tạo thư mục models trong src
                 $modelsFolder = base_path('modules/' . $name . '/src/Models');
                 File::makeDirectory($modelsFolder, 0755, true, true);
