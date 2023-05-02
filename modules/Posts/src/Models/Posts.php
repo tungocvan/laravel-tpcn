@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Posts extends Model
 {
     use HasFactory;
-   //protected $table = "";
+    protected $table = "wp_posts";
    //protected $primaryKey = "id";
    //protected $fillable = [];
    //protected $timestamps = true;

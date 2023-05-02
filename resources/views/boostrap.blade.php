@@ -7,7 +7,7 @@
 @endsection
 
 @section('main')
-    @include('Posts::lists')
+  @include('parts.custom.main') 
 @endsection
 
 @section('css')          

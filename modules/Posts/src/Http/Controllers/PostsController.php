@@ -4,6 +4,7 @@ namespace modules\Posts\src\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Modules\Posts\src\Models\Posts;
 
 class PostsController extends Controller
 {
@@ -14,7 +15,12 @@ class PostsController extends Controller
      */
     public function index()
     {
-        return view('Posts::posts');
+        $allPost = Posts::paginate($perPage = 10, $columns = ['*'])->fragment('posts');
+        $itemsPost = $allPost->items();
+        $lastPage = $allPost->lastPage();
+        $currentPage= $allPost->currentPage();
+        //dd($allPost);
+        return view('Posts::posts',['posts' => $itemsPost,'lastPage' => $lastPage, 'currentPage' => $currentPage]);
     }
 
     /**

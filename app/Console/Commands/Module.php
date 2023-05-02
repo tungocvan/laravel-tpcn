@@ -81,8 +81,8 @@ class Module extends Command
                     File::put($routesFile, $content);
                 }
             }
-
-            // tạo thư mục src
+            
+            /* tạo thư mục src */
             $srcFolder = base_path('modules/' . $name . '/src');
             if (!File::exists($srcFolder)) {
                 File::makeDirectory($srcFolder, 0755, true, true);
@@ -102,12 +102,14 @@ class Module extends Command
                 ]);
                 $newControllerPath = $controllersFolder . '/' . $name . 'Controller.php';
                 $content = file_get_contents($newControllerPath);
+                $newContent = "use Illuminate\Http\Request;\nuse App\Http\Controllers\Controller;\n";
+                $newContent .="use Modules\\$name\src\Models\\$name;" ;
                 $content = str_replace(
                     'use Illuminate\Http\Request;',
-                    "use Illuminate\Http\Request;\nuse App\Http\Controllers\Controller;",
+                    $newContent,
                     $content
                 );
-                file_put_contents($newControllerPath, $content);
+                file_put_contents($newControllerPath, $content); 
                 $methodName = strtolower($name);
                 $content = file_get_contents($newControllerPath);
                 $content = str_replace('//', "return view('{$name}::{$methodName}');", $content);

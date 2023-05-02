@@ -16,7 +16,7 @@ class Posts
      */
     public function handle(Request $request, Closure $next)
     {
-        echo 'middleware' ;
+        // echo 'middleware Posts' ;
         return $next($request);
     }
 }
