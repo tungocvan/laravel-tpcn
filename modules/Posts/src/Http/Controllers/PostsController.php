@@ -31,17 +31,18 @@ class PostsController extends Controller
     {
         //$allPost = Posts::paginate($perPage = 10, $columns = ['ID', 'post_title', 'post_status', 'post_type']);
         $allPost = Posts::select(['ID', 'post_title', 'post_status', 'post_type']);
-        return DataTables::eloquent($allPost)->toJson();
-        // $itemsPost = $allPost->items();
-        // $lastPage = $allPost->lastPage();
-        // $currentPage = $allPost->currentPage();
-        // //dd($allPost);
-        // return response()->json([
-        //     'draw' => 1,
-        //     'recordsTotal' => $allPost->total(),
-        //     'recordsFiltered' => $allPost->total(),
-        //     'data' => $itemsPost,
-        // ]);
+        return DataTables::eloquent($allPost)
+        ->addColumn('edit', function($allPost) {
+            return "<a href='#{$allPost->ID}' class='btn btn-primary'>Sửa</a>";
+        })
+        ->addColumn('delete', function($allPost) {
+            return "<a href='#{$allPost->ID}' class='btn btn-danger'>Xóa</a>";
+        })
+        ->orderColumn('edit', false)
+        ->orderColumn('delete', true)
+        ->rawColumns(['edit','delete'])
+        ->toJson();
+       
     }
 
     /**
