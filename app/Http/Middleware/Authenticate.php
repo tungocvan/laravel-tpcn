@@ -15,22 +15,22 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
+        //dd(Auth::user());
         if (!$request->expectsJson()) {
             $currentMiddleware = $request->route()->middleware();
             $str = $request->route()->uri;
-             
+
             // if(count($currentMiddleware) >0 && in_array('doctors',$currentMiddleware)){
-                
+
             //     return route('doctors.login');
             // }
             //var_dump(strstr($str,'doctors'));
-            //dd($str);
-            
-            if(strstr($str,'doctors') === false ){
-                return route('signin');    
+            //dd($currentMiddleware);
+
+            if (strstr($str, 'doctors') === false) {
+                return route('signin');
             }
             return route('doctors.login');
-            
         }
     }
 }

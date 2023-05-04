@@ -75,13 +75,13 @@ class Module extends Command
                     $routeName = strtolower($name);
                     $content = "<?php \n use Illuminate\Support\Facades\Route;";
                     $content .= "\n use Modules\\{$name}\\src\Http\Controllers\\{$name}Controller;";
-                    $content .= "\n Route::middleware(['web','{$routeName}.middleware'])->prefix('/{$routeName}')->group(function(){";
+                    $content .= "\n Route::prefix('/{$routeName}')->middleware('{$routeName}.middleware')->group(function(){";
                     $content .= "\n     Route::get('/', [{$name}Controller::class, 'index']);\n });";
 
                     File::put($routesFile, $content);
                 }
             }
-
+            
             /* tạo thư mục src */
             $srcFolder = base_path('modules/' . $name . '/src');
             if (!File::exists($srcFolder)) {
@@ -103,21 +103,16 @@ class Module extends Command
                 $newControllerPath = $controllersFolder . '/' . $name . 'Controller.php';
                 $content = file_get_contents($newControllerPath);
                 $newContent = "use Illuminate\Http\Request;\nuse App\Http\Controllers\Controller;\n";
-                $newContent .= "use Modules\\$name\src\Models\\$name;";
-                $content = str_replace('use Illuminate\Http\Request;', $newContent, $content);
-                file_put_contents($newControllerPath, $content);
+                $newContent .="use Modules\\$name\src\Models\\$name;" ;
+                $content = str_replace(
+                    'use Illuminate\Http\Request;',
+                    $newContent,
+                    $content
+                );
+                file_put_contents($newControllerPath, $content); 
                 $methodName = strtolower($name);
                 $content = file_get_contents($newControllerPath);
                 $content = str_replace('//', "return view('{$name}::{$methodName}');", $content);
-                file_put_contents($newControllerPath, $content);
-                $content = file_get_contents($newControllerPath);
-                $newContent =
-                    'public function __construct()' .
-                    "\n    {\n" .
-                    '       //$this->middleware("auth");' .
-                    "\n    }\n" .
-                    '    public function index()';
-                $content = str_replace('public function index()', $newContent, $content);
                 file_put_contents($newControllerPath, $content);
                 // tạo thư mục Middlewares trong src
                 $middlewaresFolder = base_path('modules/' . $name . '/src/Http/Middlewares');

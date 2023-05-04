@@ -32,7 +32,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    
+
     //protected $redirectTo = RouteServiceProvider::HOME;
     protected $redirectTo = RouteServiceProvider::ADMIN;
 
@@ -51,8 +51,10 @@ class LoginController extends Controller
         //dd($user);
         $providerId = $userFacebook->getId();
         $provider = 'facebook';
-        $user = User::where('provider',$provider)->where('provider_id',$providerId)->first();
-        if(!$user){
+        $user = User::where('provider', $provider)
+            ->where('provider_id', $providerId)
+            ->first();
+        if (!$user) {
             $user = new User();
             $user->name = $userFacebook->getName();
             $user->email = $userFacebook->getEmail();
@@ -71,8 +73,10 @@ class LoginController extends Controller
         //dd($user);
         $providerId = $userGoogle->getId();
         $provider = 'google';
-        $user = User::where('provider',$provider)->where('provider_id',$providerId)->first();
-        if(!$user){
+        $user = User::where('provider', $provider)
+            ->where('provider_id', $providerId)
+            ->first();
+        if (!$user) {
             $user = new User();
             $user->name = $userGoogle->getName();
             $user->email = $userGoogle->getEmail();
@@ -85,19 +89,22 @@ class LoginController extends Controller
         Auth::loginUsingId($userId);
         return redirect($this->redirectTo);
     }
-    
+
     protected function validateLogin(Request $request)
     {
-        $request->validate([
-            $this->username() => 'required|string|email',
-            'password' => 'required|string|min:6',
-        ],[
-            $this->username().'.required' => 'Tên đăng nhập bắt buộc phải nhập',
-            $this->username().'.string' => 'Tên đăng nhập không hợp lệ',        
-            $this->username().'.email' => 'Tên đăng nhập không phải là email',     
-            'password.required' => 'Mật khẩu bắt buộc phải nhập',   
-            'password.min' => 'Mật khẩu phải có ít nhất :min ký tự'
-        ]);
+        $request->validate(
+            [
+                $this->username() => 'required|string|email',
+                'password' => 'required|string|min:6',
+            ],
+            [
+                $this->username() . '.required' => 'Tên đăng nhập bắt buộc phải nhập',
+                $this->username() . '.string' => 'Tên đăng nhập không hợp lệ',
+                $this->username() . '.email' => 'Tên đăng nhập không phải là email',
+                'password.required' => 'Mật khẩu bắt buộc phải nhập',
+                'password.min' => 'Mật khẩu phải có ít nhất :min ký tự',
+            ]
+        );
     }
 
     protected function sendFailedLoginResponse(Request $request)

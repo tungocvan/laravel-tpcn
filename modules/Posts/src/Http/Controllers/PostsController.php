@@ -5,9 +5,14 @@ namespace modules\Posts\src\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\Posts\src\Models\Posts;
+use DataTables;
 
 class PostsController extends Controller
 {
+    public function __construct()
+    {
+        //$this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,9 +23,25 @@ class PostsController extends Controller
         $allPost = Posts::paginate($perPage = 10, $columns = ['*'])->fragment('posts');
         $itemsPost = $allPost->items();
         $lastPage = $allPost->lastPage();
-        $currentPage= $allPost->currentPage();
+        $currentPage = $allPost->currentPage();
         //dd($allPost);
-        return view('Posts::posts',['posts' => $itemsPost,'lastPage' => $lastPage, 'currentPage' => $currentPage]);
+        return view('Posts::posts', ['posts' => $itemsPost, 'lastPage' => $lastPage, 'currentPage' => $currentPage]);
+    }
+    public function data()
+    {
+        //$allPost = Posts::paginate($perPage = 10, $columns = ['ID', 'post_title', 'post_status', 'post_type']);
+        $allPost = Posts::select(['ID', 'post_title', 'post_status', 'post_type']);
+        return DataTables::eloquent($allPost)->toJson();
+        // $itemsPost = $allPost->items();
+        // $lastPage = $allPost->lastPage();
+        // $currentPage = $allPost->currentPage();
+        // //dd($allPost);
+        // return response()->json([
+        //     'draw' => 1,
+        //     'recordsTotal' => $allPost->total(),
+        //     'recordsFiltered' => $allPost->total(),
+        //     'data' => $itemsPost,
+        // ]);
     }
 
     /**

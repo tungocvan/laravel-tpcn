@@ -40,7 +40,8 @@ class AddMiddlewareKernel extends Command
     {
         $name = ucfirst($this->argument('name'));
         $methodName = strtolower($name);
-        $kernelFile = app_path('Http/Kernel.php');
+        //$kernelFile = app_path('Http/Kernel.php');
+        $kernelFile = 'modules/ModuleServiceProvider.php';
         if (!File::exists($kernelFile)) {
             $this->error('Kernel.php file not found!');
             return;
@@ -50,7 +51,7 @@ class AddMiddlewareKernel extends Command
 
         $find = strstr($content, "{$methodName}.middleware", true);
         if (!$find) {
-            $foundString = 'protected $routeMiddleware = [';
+            $foundString = 'add middleware';
             $newString = "\n        '{$methodName}.middleware' => \\Modules\\{$name}\src\Http\Middlewares\\{$name}::class,";
             $content = str_replace($foundString, $foundString . $newString, $content);
             file_put_contents($kernelFile, $content);
