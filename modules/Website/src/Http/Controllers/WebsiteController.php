@@ -10,7 +10,7 @@ class WebsiteController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * xxx                                       x
      * @return \Illuminate\Http\Response
      */
     public function __construct()
@@ -20,6 +20,10 @@ class WebsiteController extends Controller
     public function index()
     {
         return view('Website::website');
+    }
+    public function freshcart()
+    {
+        return view('Website::freshcart');
     }
 
     /**

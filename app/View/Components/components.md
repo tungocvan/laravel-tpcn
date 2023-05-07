@@ -1,6 +1,6 @@
 Example: Create component CardText.
 php artisan make:component CardText
-open file: AppServiceProvider.php
+open file: AppServiceProvider.php 
     -> Add: use App\View\Components\CardText; 
     -> public function boot(){
         .....

@@ -12,7 +12,7 @@ class ItemsMenu extends Component
      * @return void
      */
     public $classUl;
-    public $classLi;
+    public $classLi; 
     public $classA;
     public $hrefA;
     public $srcImg;

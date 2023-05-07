@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Providers;
+use App\View\Components\Input;
+use App\View\Components\Editor;
+
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
@@ -38,7 +41,7 @@ use App\View\Components\ItemsMenu;
 use App\View\Components\BreadCrumb; 
 use App\View\Components\CategoryMenu; 
 use App\View\Components\StoreSearch; 
-use App\View\Components\PriceFilter; 
+use App\View\Components\PriceFilter;  
 use App\View\Components\RatingFilter; 
 use App\View\Components\ComboboxFilter; 
 use App\View\Components\PaginationProduct; 
@@ -77,6 +80,9 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Schema::defaultStringLength(191);
+        Blade::component('input', Input::class);
+        Blade::component('editor', Editor::class);
+                        
         Blade::component('package-input-search', InputSearch::class);
         Blade::component('package-button-location', ButtonLocation::class);
         Blade::component('package-button-location-mobile', ButtonLocationMobile::class);
