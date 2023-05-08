@@ -11,9 +11,12 @@ class Input extends Component
      *
      * @return void
      */
-    public function __construct()
+    public $options;
+    public function __construct($options)
     {
-        //
+        if ($options) {
+            $this->options = $options;
+        }
     }
 
     /**
