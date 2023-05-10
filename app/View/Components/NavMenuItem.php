@@ -11,9 +11,11 @@ class NavMenuItem extends Component
      *
      * @return void
      */
-    public function __construct()
+    public $itemsMenu;
+    public function __construct($itemsMenu)
     {
         //
+        $this->itemsMenu = $itemsMenu;
     }
 
     /**

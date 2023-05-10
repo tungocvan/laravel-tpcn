@@ -44,7 +44,22 @@ class WebsiteController extends Controller
      */
     public function store(Request $request)
     {
-        return view('Website::website');
+        $request->validate(
+            [
+                'username' => 'required|min:2',
+                'email' => 'required|email',
+            ],
+            [
+                'username.min' => 'username ít nhất :min ký tự',
+                'username.required' => 'username buộc phải nhập',
+                'email.required' => 'email buộc phải nhập',
+                'email.email' => 'Email không hợp lệ',
+            ]
+        );
+        //$selectedRoles = $request->input('select', []);
+        //$selectedRoles = is_array($selectedRoles) ? $selectedRoles : [$selectedRoles];
+        dd($request);
+        return view('Website::freshcart');
     }
 
     /**

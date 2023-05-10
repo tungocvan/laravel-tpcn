@@ -17,8 +17,8 @@
 @section('css')           
         <link rel="stylesheet" href="{{ $myAsset.'/css/theme.min.css' }}" />
 @endsection
-@section('js')
+@section('js')        
         <script src="{{ $myAsset.'/libs/jquery/dist/jquery.min.js' }} "></script>
-        <script src="{{ $myAsset.'/libs/bootstrap/dist/js/bootstrap.bundle.min.js' }} "></script>           
+        <script src="{{ $myAsset.'/libs/bootstrap/dist/js/bootstrap.bundle.min.js' }} "></script>   
         <script src="{{ $myAsset.'/js/theme.min.js' }} "></script>
 @endsection
