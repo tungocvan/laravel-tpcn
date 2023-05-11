@@ -34,19 +34,20 @@ class CategoriesController extends Controller
             $itemTaxomo['count'] = $item->count;
             array_push($category, $itemTaxomo);
         }
+        echo getCategories($category);
 
-        foreach ($category as $key => $item) {
-            echo $item->term_id .
-                '-' .
-                $item->name .
-                '-' .
-                $item->slug .
-                '-' .
-                $item->parent .
-                '-' .
-                $item->count .
-                '<br/>';
-        }
+        // foreach ($category as $key => $item) {
+        //     echo $item->term_id .
+        //         '-' .
+        //         $item->name .
+        //         '-' .
+        //         $item->slug .
+        //         '-' .
+        //         $item->parent .
+        //         '-' .
+        //         $item->count .
+        //         '<br/>';
+        // }
         // dd($category);
         return view('Categories::categories');
     }
