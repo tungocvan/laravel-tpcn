@@ -11,6 +11,7 @@ class ModuleServiceProvider extends ServiceProvider
     }
     private $middlewares = [
         // add middleware
+        'abc.middleware' => \Modules\Abc\src\Http\Middlewares\Abc::class,
         'categories.middleware' => \Modules\Categories\src\Http\Middlewares\Categories::class,
         'admin.middleware' => \Modules\Admin\src\Http\Middlewares\Admin::class,
         'website.middleware' => \Modules\Website\src\Http\Middlewares\Website::class,
