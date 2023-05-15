@@ -28,6 +28,7 @@ class CategoriesController extends Controller
 
         $category = [];
         $Taxonomy = Taxonomy::where('taxonomy', '=', 'product_cat')->get();
+        //dd($Taxonomy);
         foreach ($Taxonomy as $key => $item) {
             $itemTaxomo = Taxonomy::find($item->term_id)->category;
             $itemTaxomo['parent'] = $item->parent;
