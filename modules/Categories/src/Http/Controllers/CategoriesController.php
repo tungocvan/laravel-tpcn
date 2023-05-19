@@ -6,7 +6,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\Categories\src\Models\Categories;
 use Modules\Categories\src\Models\Taxonomy;
+use Modules\Posts\src\Models\Posts;
+use Corcel\Model\Menu;
+use Corcel\Model\Post;
+use Corcel\Model\Meta\PostMeta;
+
 //use Corcel\Model\Term;
+// use Illuminate\Support\Facades\DB;
 
 class CategoriesController extends Controller
 {
@@ -28,7 +34,8 @@ class CategoriesController extends Controller
         // }
 
         $category = [];
-        $Taxonomy = Taxonomy::where('taxonomy', '=', 'category')->get();
+        // product_cat // category // nav_menu
+        $Taxonomy = Taxonomy::where('taxonomy', '=', 'nav_menu')->get();
         //dd($Taxonomy);
         foreach ($Taxonomy as $key => $item) {
             $itemTaxomo = Taxonomy::find($item->term_id)->category;
@@ -79,6 +86,51 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function checkSubMenu($id)
+    {
+        $post = Post::find($id);
+        $metaValue = $post->meta
+            ->where('meta_key', '_menu_item_menu_item_parent')
+            ->pluck('meta_value')
+            ->first();
+        return $metaValue;
+    }
+    public function getMenu(Request $request)
+    {
+        $menus = Menu::slug('menu-van')->first()->items;
+        // dd($menus);
+        foreach ($menus as $item) {
+            //$type = $item->instance()->type ?? '';
+            $id = $item->instance()->ID ?? '';
+            $url = $item->instance()->url ?? '';
+            $title = $item->instance()->title ?? ''; // if it's a Post
+            $idParent = $this->checkSubMenu($id);
+            if ($title != '' && $idParent == 0) {
+                echo '<a href=/' . $url . '>' . $title . '</a><br />';
+            } else {
+                echo '------' . '<a href=/' . $url . '>' . $title . '</a><br />';
+            }
+
+            // echo $item->instance()->name ?? ''; // if it's a Term
+            //  echo $item->instance()->link_text ?? ''; // if it's a custom link
+        }
+        //dd($menus);
+        // $menuItems = Posts::where('post_type', 'nav_menu_item')
+        //     ->orderBy('menu_order', 'asc')
+        //     ->get();
+        // dd($menuItems);
+        // foreach ($menuItems as $menuItem) {
+        //     $title = $menuItem->post_title;
+        //     echo $title . '<br />';
+        //     // $url = $menuItem->guid;
+        //     // $post_parent = $menuItem->post_parent;
+        //     // if ($post_parent == 0) {
+        //     //     echo $title . '<br />';
+        //     // }
+        // }
+        //return view('Categories::categories');
+    }
+
     public function store(Request $request)
     {
         return view('Categories::categories');

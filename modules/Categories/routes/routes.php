@@ -6,4 +6,5 @@ Route::middleware(['web', 'categories.middleware'])
     ->group(function () {
         Route::get('/', [CategoriesController::class, 'index']);
         Route::get('/add', [CategoriesController::class, 'create']);
+        Route::get('/getMenu', [CategoriesController::class, 'getMenu']);
     });

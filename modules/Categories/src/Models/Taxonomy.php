@@ -9,7 +9,7 @@ use Modules\Categories\src\Models\Categories;
 class Taxonomy extends Model
 {
     use HasFactory;
-    protected $table = 'nbw_term_taxonomy';
+    protected $table = 'term_taxonomy';
     protected $primaryKey = 'term_id';
     protected $fillable = ['term_taxonomy_id', 'term_id', 'taxonomy', 'description', 'parent', 'count'];
     public $timestamps = false;
