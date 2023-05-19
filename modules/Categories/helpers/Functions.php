@@ -11,3 +11,15 @@ function getCategories($categories, $parentId = 0, $char = '')
         }
     }
 }
+function getCategoriesOptions($categories, $parentId = 0, $char = '')
+{
+    if ($categories) {
+        foreach ($categories as $key => $category) {
+            if ($category->parent == $parentId) {
+                echo '<option value=' . $category->term_id . '>' . $char . $category->name . '</option>';
+                unset($categories[$key]);
+                getCategoriesOptions($categories, $category->term_id, $char . '-----| ');
+            }
+        }
+    }
+}

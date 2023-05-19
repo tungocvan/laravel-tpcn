@@ -9,10 +9,10 @@ use Modules\Categories\src\Models\Categories;
 class Taxonomy extends Model
 {
     use HasFactory;
-    protected $table = 'wp_term_taxonomy';
+    protected $table = 'nbw_term_taxonomy';
     protected $primaryKey = 'term_id';
-    //protected $fillable = ['term_id', 'name', 'slug', 'term_group'];
-    //protected $timestamps = true;
+    protected $fillable = ['term_taxonomy_id', 'term_id', 'taxonomy', 'description', 'parent', 'count'];
+    public $timestamps = false;
     //const CREATED_AT ="created_at";
     //const UPDATED_AT ="updated_at";
 

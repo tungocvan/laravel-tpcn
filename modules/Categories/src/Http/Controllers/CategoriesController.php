@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\Categories\src\Models\Categories;
 use Modules\Categories\src\Models\Taxonomy;
+//use Corcel\Model\Term;
 
 class CategoriesController extends Controller
 {
@@ -27,7 +28,7 @@ class CategoriesController extends Controller
         // }
 
         $category = [];
-        $Taxonomy = Taxonomy::where('taxonomy', '=', 'product_cat')->get();
+        $Taxonomy = Taxonomy::where('taxonomy', '=', 'category')->get();
         //dd($Taxonomy);
         foreach ($Taxonomy as $key => $item) {
             $itemTaxomo = Taxonomy::find($item->term_id)->category;
@@ -35,22 +36,10 @@ class CategoriesController extends Controller
             $itemTaxomo['count'] = $item->count;
             array_push($category, $itemTaxomo);
         }
-        echo getCategories($category);
 
-        // foreach ($category as $key => $item) {
-        //     echo $item->term_id .
-        //         '-' .
-        //         $item->name .
-        //         '-' .
-        //         $item->slug .
-        //         '-' .
-        //         $item->parent .
-        //         '-' .
-        //         $item->count .
-        //         '<br/>';
-        // }
-        // dd($category);
-        return view('Categories::categories');
+        // $options = getCategoriesOptions($category);
+        // dd($options);
+        return view('Categories::categories', ['category' => $category]);
     }
 
     /**
@@ -60,7 +49,28 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        return view('Categories::categories');
+        $parentSlug = 'abc';
+        $parentIdSlug = Categories::where('slug', $parentSlug)->first()->term_id ?? 0;
+
+        $slug = 'abc-1';
+        $name = 'abc 1';
+
+        $category = Categories::create([
+            'name' => $name,
+            'slug' => $slug,
+        ]);
+
+        $categoryIdSlug = Categories::where('slug', $slug)->first()->term_id;
+
+        $taxonomy = Taxonomy::create([
+            'term_id' => $categoryIdSlug,
+            'taxonomy' => 'category',
+            'parent' => $parentIdSlug,
+            'description' => 'abc description',
+            'count' => 0,
+        ]);
+
+        return view('Categories::add');
     }
 
     /**
